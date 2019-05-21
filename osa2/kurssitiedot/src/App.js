@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import Course from './components/Course'
 
 const App = () => {
-  const course = {
+  const courses = [{
     name: 'Half Stack -sovelluskehitys',
+    id: 1,
     parts: [
       {
         name: 'Reactin perusteet',
@@ -22,11 +23,28 @@ const App = () => {
         id: 3
       }
     ]
-  }
+  },
+  {
+    name: 'Node.js',
+    id: 2,
+    parts: [
+      {
+        name: 'Routing',
+        exercises: 3,
+        id: 1
+      },
+      {
+        name: 'Middlewaret',
+        exercises: 7,
+        id: 2
+      }
+    ]
+  }]
 
+  const courseElements = ()  => courses.map( c => <Course key={c.id} course={c} />)
   return (
     <div>
-      <Course course={course} />
+      {courseElements()}
     </div>
   )
 }
