@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -14,14 +14,6 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('');
   const [ filterString, setNewFilterString ] = useState('');
 
-  const personRows = () => persons.
-    filter(person => person.name.toLowerCase().indexOf(filterString.toLowerCase()) != -1).
-    map(person =>
-            <Person
-                key={person.name}
-                person={person}
-            />
-    )
     const handleChangeName = (event) => {
         setNewName(event.target.value)
     };
@@ -52,7 +44,7 @@ const App = () => {
                       handleChangeNumber={handleChangeNumber}
                       addNewPerson={addNewPerson} />
         <h2>Numbers</h2>
-          { personRows() }
+          <Persons persons={persons} filterString={filterString} />
       </div>
   )
 
