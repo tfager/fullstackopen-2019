@@ -1,9 +1,12 @@
 import React from 'react'
 
-const Person = ( props) => {
+const Person = ( {person, deletePerson }) => {
+    const deleteClicked = () => { deletePerson(person.id); }
     return (
         <div>
-            { props.person.name } { props.person.number }
+            { person.name } { person.number }
+
+            <button onClick={deleteClicked}> Delete</button>
         </div>
     )
 

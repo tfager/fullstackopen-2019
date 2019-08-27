@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/personService'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([]);
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ filterString, setNewFilterString ] = useState('');
+  const [ notification, setNotification ] = useState(null);
 
   useEffect( () => {
-      axios
-          .get("/db.json")
-          .then( response => {
-              setPersons(response.data.persons)
+    personService.getAll()
+    .then( response => {
+              setPersons(response.data)
           })
   }, [])
 
@@ -30,9 +32,23 @@ const App = () => {
             alert(`${newName} is already in the books`)
         } else {
             const newPerson = {name: newName, number: newNumber}
-            setPersons(persons.concat(newPerson))
-            setNewName('')
-            setNewNumber('')
+            personService.create(newPerson)
+                .then((response) => {
+                    setPersons(persons.concat(response.data))
+                    setNotification(`Added ${newName}`)
+                    setNewName('')
+                    setNewNumber('')
+                    setTimeout(() => {
+                        setNotification(null)
+                    }, 5000)
+                })
+
+        }
+    }
+    const deletePerson = (id) => {
+        if (window.confirm(`Delete person ${id} ?`)) {
+            personService.remove(id)
+                .then( (response) => setPersons(persons.filter( (person) => person.id !== id)))
         }
     }
 
@@ -41,6 +57,8 @@ const App = () => {
         <h2>Phonebook</h2>
           <Filter filterString={filterString} setNewFilterString={setNewFilterString} />
 
+        <Notification message={notification} />
+
         <h3>Add new entry</h3>
           <PersonForm newName={newName}
                       handleChangeName={handleChangeName}
@@ -48,7 +66,7 @@ const App = () => {
                       handleChangeNumber={handleChangeNumber}
                       addNewPerson={addNewPerson} />
         <h2>Numbers</h2>
-          <Persons persons={persons} filterString={filterString} />
+          <Persons persons={persons} filterString={filterString} deletePerson={deletePerson}/>
       </div>
   )
 
