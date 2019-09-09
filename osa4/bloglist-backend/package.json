@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "mongo": "docker run --name mongo --rm -p 27017:27017 -d mongo:latest",
     "test-add": "curl -X POST -d '{\"title\":\"foo\", \"author\":\"bar\", \"url\":\"http://x.y\", \"likes\":\"1\"}' -H \"Content-type: application/json\" -v localhost:3003/api/blogs",
