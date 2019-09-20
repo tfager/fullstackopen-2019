@@ -7,9 +7,10 @@
     "start": "NODE_ENV=production node src/index.js",
     "watch": "NODE_ENV=development nodemon src/index.js",
     "mongo": "docker run --name mongo --rm -p 27017:27017 -d mongo:latest",
-    "test-add": "curl -X POST -d '{\"title\":\"foo\", \"author\":\"bar\", \"url\":\"http://x.y\", \"likes\":\"1\", \"userId\":\"5d84d08b485ebae817844b9a\"}' -H \"Content-type: application/json\" -v localhost:3003/api/blogs",
+    "test-add": "curl -X POST -d '{\"title\":\"foo\", \"author\":\"bar\", \"url\":\"http://x.y\", \"likes\":\"1\"}' -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI1ZDg0ZDA4YjQ4NWViYWU4MTc4NDRiOWEiLCJpYXQiOjE1Njg5ODc3NTZ9.af7KHxgSUpOQOpAw3dyzmTYm21s1nF1cllBt-xhYc8s\" -H \"Content-type: application/json\" -v localhost:3003/api/blogs",
     "test-list": "curl -v localhost:3003/api/blogs",
     "test-add-user": "curl -d '{\"name\":\"Test User\", \"username\":\"testuser\", \"password\":\"salakala\"}' -H \"Content-type: application/json\" -v localhost:3003/api/users",
+    "test-login": "curl -d '{\"username\":\"testuser\", \"password\":\"salakala\"}' -H \"Content-type: application/json\" -v localhost:3003/api/login",
     "test": "NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "TF",

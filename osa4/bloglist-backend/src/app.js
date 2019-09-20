@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 const bloglistRouter = require('./controllers/bloglistRouter')
 const userRouter = require('./controllers/userRouter')
+const loginRouter = require('./controllers/login')
 const config = require('./utils/config')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -15,5 +16,5 @@ app.use(bodyParser.json())
 
 app.use('/api/blogs', bloglistRouter)
 app.use('/api/users', userRouter)
-
+app.use('/api/login', loginRouter)
 module.exports = app;
