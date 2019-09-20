@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/Blog')
+const User = require('../models/User')
 
 const api = supertest(app)
 
@@ -26,9 +27,18 @@ const initialBlogs = [
     }
 ]
 
+const initialUsers = [
+    {
+        username: "mvirt",
+        name: "Matti Virtanen"
+    }
+]
+
 beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(initialBlogs)
+    await User.deleteMany({})
+    await User.insertMany(initialUsers)
 })
 
 test('blogs are returned as json', async () => {
@@ -40,7 +50,6 @@ test('blogs are returned as json', async () => {
 
 test('there is correct amount of blogs', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body.length).toBe(3)
 })
 
@@ -50,11 +59,13 @@ test('blogs have id', async () => {
 })
 
 test('added blog shows up in blog list', async () => {
+    const users = await User.find({})
     await api.post('/api/blogs')
         .send({
             title: "Foo bar",
             author: "Baz",
             url: "http://www.google.com/",
+            userId: users[0]._id,
             likes: 1
         })
         .expect(201)
@@ -63,6 +74,10 @@ test('added blog shows up in blog list', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body.length).toBe(4)
     expect(response.body[3].title).toContain('Foo bar')
+    expect(response.body[3].user.name).toContain('Matti Virtanen')
+
+    const user = await User.findById(users[0]._id)
+    expect(user.blogs[0].id.toString('hex')).toEqual(response.body[3].id)
 })
 
 test('a blog can be deleted', async () => {
