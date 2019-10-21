@@ -3,6 +3,7 @@ import './App.css';
 import blogService from './services/blogs'
 import Blog from './components/Blog'
 import loginService from './services/login'
+import CreateBlogForm from './components/CreateBlogForm'
 
 function App() {
     const LOCAL_STORAGE_USER_KEY = 'loggedInBloglistUser'
@@ -11,6 +12,9 @@ function App() {
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
     const [errorMessage, setErrorMessage] = useState('')
+    const [newTitle, setNewTitle] = useState('')
+    const [newAuthor, setNewAuthor] = useState('')
+    const [newUrl, setNewUrl] = useState('')
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem(LOCAL_STORAGE_USER_KEY)
@@ -32,13 +36,14 @@ function App() {
         event.preventDefault()
         try {
             const user = await loginService.login({
-                username, password,
+                username, password
             })
 
             setUser(user)
             window.localStorage.setItem(
                 LOCAL_STORAGE_USER_KEY, JSON.stringify(user)
             )
+            blogService.setToken(user.token)
             setUsername('')
             setPassword('')
         } catch (exception) {
@@ -52,6 +57,21 @@ function App() {
     const handleLogout = async (event) => {
         window.localStorage.removeItem(LOCAL_STORAGE_USER_KEY)
         setUser(null)
+    }
+
+    const handleCreateBlog = async (event) => {
+        event.preventDefault()
+        const blog = { title: newTitle, author: newAuthor, url: newUrl }
+        blogService.create(blog)
+
+        blogService
+            .getAll().then(bs => {
+            setBlogs(bs)
+        })
+
+        setNewAuthor('')
+        setNewTitle('')
+        setNewUrl('')
     }
 
     const loginForm = () => (
@@ -106,6 +126,17 @@ function App() {
             {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
             )}
+
+            <h2>Create New Blog</h2>
+            <CreateBlogForm
+                newTitle={newTitle}
+                setNewTitle={setNewTitle}
+                newAuthor={newAuthor}
+                setNewAuthor={setNewAuthor}
+                newUrl={newUrl}
+                setNewUrl={setNewUrl}
+                handleCreateBlog={handleCreateBlog} />
+
         </div>
     );
 }
