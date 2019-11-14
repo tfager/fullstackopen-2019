@@ -4,6 +4,8 @@ import blogService from './services/blogs'
 import Blog from './components/Blog'
 import loginService from './services/login'
 import CreateBlogForm from './components/CreateBlogForm'
+import LoginForm from './components/LoginForm'
+import Togglable from "./components/Togglable";
 
 function App() {
     const LOCAL_STORAGE_USER_KEY = 'loggedInBloglistUser'
@@ -75,51 +77,28 @@ function App() {
     }
 
     const loginForm = () => (
-        <div id="loginForm">
-            <h2>Log in</h2>
-            { errorMessage }
-            <form onSubmit={handleLogin}>
-                <div>
-                    Username
-                    <input
-                        type="text"
-                        value={username}
-                        name="Username"
-                        onChange={({target}) => setUsername(target.value)}
-                    />
-                </div>
-                <div>
-                    Password
-                    <input
-                        type="password"
-                        value={password}
-                        name="Password"
-                        onChange={({target}) => setPassword(target.value)}
-                    />
-                </div>
-                <button type="submit">login</button>
-            </form>
-        </div>
+        <Togglable buttonLabel="login">
+            <LoginForm
+                username={username}
+                password={password}
+                setUsername={setUsername}
+                setPassword={setPassword}
+                errorMessage={errorMessage}
+                handleSubmit={handleLogin}/>
+        </Togglable>
     )
 
-    if (user === null) {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <h1>Bloglist application</h1>
-                </header>
-                { loginForm() }
-            </div>
-        )
-    }
     return (
         <div className="App">
             <header className="App-header">
                 <h1>Bloglist application</h1>
             </header>
-            <div>
-            { user.name } logged in. <button onClick={(event) => handleLogout(event)}>Logout</button>
-            </div>
+            {user === null ?
+                loginForm() :
+                <div>
+                    {user.name} logged in. <button onClick={(event) => handleLogout(event)}>Logout</button>
+                </div>
+            }
 
             <h2>Blogs</h2>
 
@@ -128,14 +107,16 @@ function App() {
             )}
 
             <h2>Create New Blog</h2>
-            <CreateBlogForm
-                newTitle={newTitle}
-                setNewTitle={setNewTitle}
-                newAuthor={newAuthor}
-                setNewAuthor={setNewAuthor}
-                newUrl={newUrl}
-                setNewUrl={setNewUrl}
-                handleCreateBlog={handleCreateBlog} />
+            <Togglable buttonLabel="create new blog">
+                <CreateBlogForm
+                    newTitle={newTitle}
+                    setNewTitle={setNewTitle}
+                    newAuthor={newAuthor}
+                    setNewAuthor={setNewAuthor}
+                    newUrl={newUrl}
+                    setNewUrl={setNewUrl}
+                    handleCreateBlog={handleCreateBlog} />
+            </Togglable>
 
         </div>
     );
