@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import './App.css'
 import blogService from './services/blogs'
 import Blog from './components/Blog'
 import loginService from './services/login'
 import CreateBlogForm from './components/CreateBlogForm'
 import LoginForm from './components/LoginForm'
-import Togglable from "./components/Togglable";
+import Togglable from './components/Togglable'
 
 function App() {
     const LOCAL_STORAGE_USER_KEY = 'loggedInBloglistUser'
@@ -63,7 +63,7 @@ function App() {
 
     const handleCreateBlog = async (event) => {
         event.preventDefault()
-        const blog = { title: newTitle, author: newAuthor, url: newUrl }
+        const blog = {title: newTitle, author: newAuthor, url: newUrl}
         blogService.create(blog)
 
         blogService
@@ -103,7 +103,7 @@ function App() {
             <h2>Blogs</h2>
 
             {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
+                <Blog key={blog.id} blog={blog}/>
             )}
 
             <h2>Create New Blog</h2>
@@ -115,11 +115,11 @@ function App() {
                     setNewAuthor={setNewAuthor}
                     newUrl={newUrl}
                     setNewUrl={setNewUrl}
-                    handleCreateBlog={handleCreateBlog} />
+                    handleCreateBlog={handleCreateBlog}/>
             </Togglable>
 
         </div>
-    );
+    )
 }
 
-export default App;
+export default App
