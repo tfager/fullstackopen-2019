@@ -1,29 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const LoginForm = ( { username, password, setUsername, setPassword, errorMessage, handleSubmit}) => {
+const removeKey = (k, { [k]:_, ...o }) => o
+
+const LoginForm = ( { username, password, errorMessage, handleLogin}) => {
+    // TODO: controlled/noncontrolled? See console
+    const username_field = removeKey('reset', username)
+    const password_field = removeKey('reset', password)
     return (
         <div id="loginForm">
             <h2>Log in</h2>
             { errorMessage }
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
                 <div>
                     Username
-                    <input
-                        type="text"
-                        value={username}
-                        name="Username"
-                        onChange={({target}) => setUsername(target.value)}
-                    />
+                    <input { ...username_field } />
                 </div>
                 <div>
                     Password
-                    <input
-                        type="password"
-                        value={password}
-                        name="Password"
-                        onChange={({target}) => setPassword(target.value)}
-                    />
+                    <input {...password_field} />
                 </div>
                 <button type="submit">login</button>
             </form>
@@ -32,11 +27,9 @@ const LoginForm = ( { username, password, setUsername, setPassword, errorMessage
 }
 
 LoginForm.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    setUsername: PropTypes.func.isRequired,
-    setPassword: PropTypes.func.isRequired,
+    handleLogin: PropTypes.func.isRequired,
+    username: PropTypes.object.isRequired,
+    password: PropTypes.object.isRequired,
     errorMessage: PropTypes.string.isRequired
 }
 export default LoginForm

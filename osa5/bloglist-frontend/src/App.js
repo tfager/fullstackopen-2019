@@ -6,12 +6,13 @@ import loginService from './services/login'
 import CreateBlogForm from './components/CreateBlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import { useField } from './hooks/useField'
 
 function App() {
     const LOCAL_STORAGE_USER_KEY = 'loggedInBloglistUser'
     const [blogs, setBlogs] = useState([])
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const username = useField('text')
+    const password = useField('text')
     const [user, setUser] = useState(null)
     const [errorMessage, setErrorMessage] = useState('')
     const [newTitle, setNewTitle] = useState('')
@@ -37,8 +38,10 @@ function App() {
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
+            console.log("Username: "+ username)
             const user = await loginService.login({
-                username, password
+                'username': username.value,
+                'password': password.value
             })
 
             setUser(user)
@@ -46,8 +49,8 @@ function App() {
                 LOCAL_STORAGE_USER_KEY, JSON.stringify(user)
             )
             blogService.setToken(user.token)
-            setUsername('')
-            setPassword('')
+            username.reset('')
+            password.reset('')
         } catch (exception) {
             setErrorMessage('wrong credentials')
             setTimeout(() => {
@@ -81,10 +84,8 @@ function App() {
             <LoginForm
                 username={username}
                 password={password}
-                setUsername={setUsername}
-                setPassword={setPassword}
                 errorMessage={errorMessage}
-                handleSubmit={handleLogin}/>
+                handleLogin={handleLogin}/>
         </Togglable>
     )
 
