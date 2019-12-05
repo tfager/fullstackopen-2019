@@ -15,9 +15,9 @@ function App() {
     const password = useField('text')
     const [user, setUser] = useState(null)
     const [errorMessage, setErrorMessage] = useState('')
-    const [newTitle, setNewTitle] = useState('')
-    const [newAuthor, setNewAuthor] = useState('')
-    const [newUrl, setNewUrl] = useState('')
+    const newTitle = useField('text')
+    const newAuthor = useField('text')
+    const newUrl = useField('text')
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem(LOCAL_STORAGE_USER_KEY)
@@ -66,17 +66,19 @@ function App() {
 
     const handleCreateBlog = async (event) => {
         event.preventDefault()
-        const blog = {title: newTitle, author: newAuthor, url: newUrl}
-        blogService.create(blog)
-
-        blogService
-            .getAll().then(bs => {
-            setBlogs(bs)
+        const blog = {title: newTitle.value, author: newAuthor.value, url: newUrl.value}
+        console.log("Creating blog: ", blog)
+        blogService.create(blog).then( () => {
+            blogService
+                .getAll().then(bs => {
+                console.log("Received blogs: ", bs)
+                setBlogs(bs)
+            })
         })
 
-        setNewAuthor('')
-        setNewTitle('')
-        setNewUrl('')
+        newAuthor.reset('')
+        newTitle.reset('')
+        newUrl.reset('')
     }
 
     const loginForm = () => (
@@ -111,11 +113,8 @@ function App() {
             <Togglable buttonLabel="create new blog">
                 <CreateBlogForm
                     newTitle={newTitle}
-                    setNewTitle={setNewTitle}
                     newAuthor={newAuthor}
-                    setNewAuthor={setNewAuthor}
                     newUrl={newUrl}
-                    setNewUrl={setNewUrl}
                     handleCreateBlog={handleCreateBlog}/>
             </Togglable>
 

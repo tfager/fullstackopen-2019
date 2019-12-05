@@ -1,31 +1,26 @@
 import React from 'react'
 
-const CreateBlogForm = ({ newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, handleCreateBlog }) => {
-    const handleChangeTitle = (event) => {
-        setNewTitle(event.target.value)
-    }
-    const handleChangeAuthor = (event) => {
-        setNewAuthor(event.target.value)
-    }
-    const handleChangeUrl = (event) => {
-        setNewUrl(event.target.value)
-    }
+const removeKey = (k, { [k]:_, ...o }) => o
 
+const CreateBlogForm = ({ newTitle, newAuthor, newUrl, handleCreateBlog }) => {
+    const newTitleField = removeKey('reset', newTitle)
+    const newAuthorField = removeKey('reset', newAuthor)
+    const newUrlField = removeKey('reset', newUrl)
     return (
         <form>
             <table border="0">
                 <tbody>
                     <tr>
                         <td>Title:</td>
-                        <td><input value={ newTitle } onChange={ handleChangeTitle } /></td>
+                        <td><input {...newTitleField } /></td>
                     </tr>
                     <tr>
                         <td>Author:</td>
-                        <td><input value={ newAuthor } onChange={ handleChangeAuthor }  /></td>
+                        <td><input {...newAuthorField } /></td>
                     </tr>
                     <tr>
                         <td>URL:</td>
-                        <td><input value={ newUrl } onChange={ handleChangeUrl }  /></td>
+                        <td><input {...newUrlField } /></td>
                     </tr>
                 <tr>
                     <td colSpan="2">
