@@ -1,32 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { createStore } from 'redux'
+import {createStore} from 'redux'
 import reducer from './reducer'
+import OpinionButton from './components/OpinionButton'
+import StatDisplay from './components/StatDisplay'
+import ActionButton from "./components/ActionButton";
 
 const store = createStore(reducer)
+const GOOD = 'GOOD'
+const BAD = 'BAD'
+const OK = 'OK'
+const ZERO = 'ZERO'
 
 const App = () => {
-  const good = () => {
-    store.dispatch({
-      type: 'GOOD'
-    })
-  }
+    const resetCountersAction = {
+        type: ZERO
+    }
 
-  return (
-    <div>
-      <button onClick={good}>hyvä</button> 
-      <button>neutraali</button> 
-      <button>huono</button>
-      <button>nollaa tilastot</button>
-      <div>hyvä {store.getState().good}</div>
-      <div>neutraali</div>
-      <div>huono</div>
-    </div>
-  )
+    return (
+        <div>
+            <OpinionButton text="hyvä" opinionType={GOOD} store={store}/>
+            <OpinionButton text="neutraali" opinionType={OK} store={store}/>
+            <OpinionButton text="huono" opinionType={BAD} store={store}/>
+            <ActionButton store={store} text="nollaa tilastot" action={resetCountersAction}/>
+            <StatDisplay text="hyvä" store={store} opinionVar="good"/>
+            <StatDisplay text="neutraali" store={store} opinionVar="ok"/>
+            <StatDisplay text="huono" store={store} opinionVar="bad"/>
+        </div>
+    )
 }
 
 const renderApp = () => {
-  ReactDOM.render(<App />, document.getElementById('root'))
+    ReactDOM.render(<App/>, document.getElementById('root'))
 }
 
 renderApp()
