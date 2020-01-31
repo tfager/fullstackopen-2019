@@ -26,6 +26,16 @@ export const createVote = (id) => {
   }
 }
 
+export const createAnecdote = (content) => {
+  return {
+    type: 'CREATE_ANECDOTE',
+    anecdote: {
+      id: getId(),
+      content: content,
+      votes: 0
+    }
+  }
+}
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -34,9 +44,12 @@ const reducer = (state = initialState, action) => {
     case 'VOTE':
       return state.map(anecdote =>
           anecdote.id === action.id ? {...anecdote, votes: anecdote.votes + 1} : anecdote)
-
+    case 'CREATE_ANECDOTE':
+      return [...state, action.anecdote ]
+    default:
+      console.log("Whaaaat? action.type = "+ action.type);
+      break;
   }
-
 
   return state
 }
