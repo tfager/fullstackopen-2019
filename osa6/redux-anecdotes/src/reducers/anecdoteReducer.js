@@ -39,19 +39,22 @@ export const createAnecdote = (content) => {
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
+  var newState = state;
 
   switch (action.type) {
     case 'VOTE':
-      return state.map(anecdote =>
+      newState = state.map(anecdote =>
           anecdote.id === action.id ? {...anecdote, votes: anecdote.votes + 1} : anecdote)
+      break;
     case 'CREATE_ANECDOTE':
-      return [...state, action.anecdote ]
+      newState = [...state, action.anecdote ]
+      break;
     default:
       console.log("Whaaaat? action.type = "+ action.type);
       break;
   }
 
-  return state
+  return newState.sort((a, b) => (b.votes - a.votes));
 }
 
 export default reducer
