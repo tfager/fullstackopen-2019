@@ -37,6 +37,10 @@ export const createAnecdote = (content) => {
   }
 }
 const reducer = (state = initialState, action) => {
+  if (action === undefined) {
+    return initialState;
+  }
+
   console.log('state now: ', state)
   console.log('action', action)
   var newState = state;

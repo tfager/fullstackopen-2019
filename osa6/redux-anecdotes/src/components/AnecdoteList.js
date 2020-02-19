@@ -3,7 +3,7 @@ import {createVote} from "../reducers/anecdoteReducer";
 
 const AnecdoteList = ({store}) => {
 
-    var anecdotes = store.getState();
+    let anecdotes = store.getState().anecdotes;
     const vote = (id) => {
         store.dispatch(createVote(id))
     }
