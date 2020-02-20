@@ -1,16 +1,16 @@
 import React from "react";
 import {createAnecdote} from "../reducers/anecdoteReducer";
-import {showNotificationTimed} from "../reducers/notificationReducer";
+import {showNotificationTimed, setNotification, hideNotification} from "../reducers/notificationReducer";
+import { connect } from 'react-redux'
 
 
-const AnecdoteForm = ({store}) => {
+const AnecdoteForm = ({createAnecdote, setNotification, hideNotification}) => {
     const onSubmitCreateAnecdote = (event) => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
-        store.dispatch(
-            createAnecdote(content))
-        showNotificationTimed(store, "You created: "+ content, 5000);
+        createAnecdote(content)
+        showNotificationTimed(setNotification, hideNotification, "You created: "+ content, 5000);
     }
 
     return (
@@ -24,4 +24,14 @@ const AnecdoteForm = ({store}) => {
     )
 }
 
-export default AnecdoteForm;
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+const mapDispatchToProps = {
+    createAnecdote,
+    setNotification,
+    hideNotification
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnecdoteForm);

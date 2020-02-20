@@ -17,10 +17,10 @@ export const hideNotification = (notification) => {
     }
 }
 
-export const showNotificationTimed = (store, notification, timeout) => {
-    store.dispatch(setNotification(notification));
+export const showNotificationTimed = (showF, hideF, notification, timeout) => {
+    showF(notification);
     setTimeout( () => {
-        store.dispatch(hideNotification(notification))
+        hideF(notification)
     }, timeout);
 }
 
