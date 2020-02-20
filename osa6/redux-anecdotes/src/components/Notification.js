@@ -6,7 +6,9 @@ const Notification = ({store}) => {
     padding: 10,
     borderWidth: 1
   }
-  return (
+  if (!store.getState().notification) return ( <div />)
+  else return (
+
     <div style={style}>
       {store.getState().notification}
     </div>
