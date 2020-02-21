@@ -1,23 +1,9 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
-
 const initialState = []
 
 export const createAnecdote = (content) => {
   return {
     type: 'CREATE_ANECDOTE',
-    anecdote: {
-      id: getId(),
-      content: content,
-      votes: 0
-    }
+    anecdote: content
   }
 }
 

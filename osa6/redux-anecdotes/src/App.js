@@ -6,11 +6,11 @@ import Notification from './components/Notification';
 import { initAnecdotes} from './reducers/anecdoteReducer';
 import anecdoteService from './services/anecdoteService';
 
-const App = (props) => {
+const App = ({initAnecdotes}) => {
 
     useEffect(() => {
         anecdoteService
-            .getAll().then(notes => props.initAnecdotes(notes))
+            .getAll().then(notes => initAnecdotes(notes))
     },[])
   return (
     <div>
