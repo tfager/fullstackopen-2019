@@ -7,14 +7,11 @@ import anecdoteService from '../services/anecdoteService';
 
 
 const AnecdoteForm = ({createAnecdote, setNotification, hideNotification}) => {
-    const onSubmitCreateAnecdote = async (event) => {
+    const onSubmitCreateAnecdote = (event) => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
-        console.log("Creating anecdote with", content);
-        const newAnecdote = await anecdoteService.createNew(content);
-        console.log("New anecdote: ", newAnecdote);
-        createAnecdote(newAnecdote);
+        createAnecdote(content);
         showNotificationTimed(setNotification, hideNotification, "You created: "+ content, 5000);
     }
 

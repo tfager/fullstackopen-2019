@@ -3,9 +3,12 @@ import anecdoteService from '../services/anecdoteService';
 const initialState = []
 
 export const createAnecdote = (content) => {
-  return {
-    type: 'CREATE_ANECDOTE',
-    anecdote: content
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(content);
+    dispatch({
+      type: 'CREATE_ANECDOTE',
+      anecdote: newAnecdote
+    })
   }
 }
 
