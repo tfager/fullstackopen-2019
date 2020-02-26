@@ -2,9 +2,6 @@ import React from "react";
 import {createAnecdote} from "../reducers/anecdoteReducer";
 import {showNotificationTimed, setNotification, hideNotification} from "../reducers/notificationReducer";
 import { connect } from 'react-redux'
-import anecdoteService from '../services/anecdoteService';
-
-
 
 const AnecdoteForm = ({createAnecdote, setNotification, hideNotification}) => {
     const onSubmitCreateAnecdote = (event) => {

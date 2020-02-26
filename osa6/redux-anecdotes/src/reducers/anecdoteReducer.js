@@ -13,9 +13,14 @@ export const createAnecdote = (content) => {
 }
 
 export const createVote = (id) => {
-  return {
-     type: 'VOTE',
-     id: id
+  return async (dispatch, getState) => {
+    console.log("State = ", getState());
+    let votes = getState().anecdotes.filter(anecdote => anecdote.id === id)[0].votes
+    anecdoteService.updateVotes(id, votes+1)
+    dispatch({
+        type: 'VOTE',
+        id: id
+    })
   }
 }
 
