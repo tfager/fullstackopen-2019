@@ -3,31 +3,22 @@ const initialState = "";
 const SET_NOTIFICATION = "SET_NOTIFICATION";
 const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 
-export const setNotification = (notification) => {
-    return {
-        type: SET_NOTIFICATION,
-        notification: notification
-    };
-}
-
-export const hideNotification = (notification) => {
-    return {
-        type: HIDE_NOTIFICATION,
-        notification: notification
+export const showNotification = (notification, timeout) => {
+    return async (dispatch) => {
+        dispatch({
+            type: SET_NOTIFICATION,
+            notification: notification
+        });
+        setTimeout( () => {
+            dispatch({
+                type: HIDE_NOTIFICATION,
+                notification: notification
+            })
+        }, timeout);
     }
 }
 
-export const showNotificationTimed = (showF, hideF, notification, timeout) => {
-    showF(notification);
-    setTimeout( () => {
-        hideF(notification)
-    }, timeout);
-}
-
 const reducer = (state = initialState, action) => {
-    console.log('notification state now: ', state)
-    console.log('action', action)
-
     switch (action.type) {
         case SET_NOTIFICATION:
             return action.notification;
